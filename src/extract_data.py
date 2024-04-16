@@ -5,6 +5,7 @@ import re
 import pandas as pd
 from typing import TypedDict, List, Dict, Union
 import time
+from pathlib import Path
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -33,19 +34,23 @@ class Poses(TypedDict):
 def main():
     # Create compiled data json
     data = []
-    with open("audio_segmentation.json", "r") as file:
+    root_folder = Path(__file__).parents[1]
+    input_file_path = root_folder / ("data/audio_segmentation.json")
+    with open(input_file_path, "r") as file:
         for line in file:
             segment = json.loads(line)
             data.append({"start": segment["start"], "end": segment["end"], "output": segment["words"], "positions": {}, "force": {}})
     print(f"Loaded {len(data)} audio segments")
         
     # Load force data from CSV file
-    force_data = pd.read_csv("force_data.csv")
+    force_data_path = root_folder / ("data/force_data.csv")
+    force_data = pd.read_csv(force_data_path)
     print(f"Loaded {len(force_data)} entries from force data CSV")
     
     # Load poses from file
     poses: List[Poses] = []
-    with open("cut_poses.jsonl", "r") as file:
+    poses_path = root_folder / ("data/cut_poses.jsonl")
+    with open(poses_path, "r") as file:
         for line in file:
             poses.append(Poses(json.loads(line)))
     print(f"Loaded {len(poses)} poses")
@@ -110,7 +115,9 @@ def main():
 
 
     # Write the updated data to a file
-    with open("organized_data.json", "w") as outfile:
+    
+    organized_path = root_folder / ("data/organized_data.json")
+    with open(organized_path, "w") as outfile:
         json.dump(data, outfile, indent=4)
         
 main()

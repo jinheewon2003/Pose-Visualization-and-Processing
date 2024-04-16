@@ -3,6 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 from matplotlib.animation import FuncAnimation
+from pathlib import Path
 
 # Define joint connections
 JOINT_CONNECTIONS = [
@@ -18,7 +19,9 @@ JOINT_CONNECTIONS = [
 ]
 
 # Load compiled data from file
-with open("compiled_data.json", "r") as file:
+root_folder = Path(__file__).parents[1]
+organized_path = root_folder / ("data/timestamped_data.json")
+with open(organized_path, "r") as file:
     compiled_data = json.load(file)
 
 timestamps = sorted(compiled_data.keys())
@@ -72,5 +75,10 @@ def update(frame):
         ax3.text(0.5, 0.5, word, ha='center', va='center', fontsize=16)
 
 # Create the animation
-animation = FuncAnimation(fig, update, frames=num_frames, interval=0.5)
+animation = FuncAnimation(fig, update, frames=num_frames, interval=500)
+
+# Save the animation as a video file
+organized_path = root_folder / ("results/completed.mp4")
+animation.save(organized_path, writer='ffmpeg')
+
 plt.show()

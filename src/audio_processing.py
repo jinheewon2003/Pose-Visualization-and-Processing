@@ -1,11 +1,19 @@
 import whisper_timestamped as whisper
 import json
+from pathlib import Path
 
-audio = whisper.load_audio("cut_audio.wav")
+input_file = "cut_audio.wav"
+output_file = "audio_segmentation.json"
+
+root_folder = Path(__file__).parents[1]
+
+input_file_path = root_folder / ("data/" + input_file)
+output_file_path = root_folder / ("processed_data/" + output_file)
+audio = whisper.load_audio(input_file_path)
 model = whisper.load_model("medium.en")
 result = whisper.transcribe(model, audio, language="en")
 
-with open("audio_segmentation.json", "w") as f:
+with open(output_file_path, "w") as f:
     # Iterate over each segment
     for segment in result["segments"]:
         segment_dict = {

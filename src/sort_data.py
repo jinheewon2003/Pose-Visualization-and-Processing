@@ -1,4 +1,5 @@
 import json
+from pathlib import Path
 
 # Define joint names and connections
 JOINT_NAMES = [
@@ -59,7 +60,9 @@ def process_segment(segment, compiled_data):
 
 def main():
     # Load organized data from file
-    with open("organized_data.json", "r") as file:
+    root_folder = Path(__file__).parents[1]
+    organized_path = root_folder / ("data/organized_data.json")
+    with open(organized_path, "r") as file:
         organized_data = json.load(file)
 
     # Create compiled data dictionary
@@ -70,7 +73,8 @@ def main():
         process_segment(segment, compiled_data)
 
     # Write the updated data to a file
-    with open("compiled_data.json", "w") as outfile:
+    organized_path = root_folder / ("data/timestamped_data.json")
+    with open(organized_path, "w") as outfile:
         json.dump(compiled_data, outfile, indent=4)
 
 main()
