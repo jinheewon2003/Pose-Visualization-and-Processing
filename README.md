@@ -4,10 +4,7 @@ This repository contains scripts for processing audio and pose data, extracting 
 
 ## Setup
 
-To use the scripts in this repository, you need to have Python 3 installed on your system. You also need to install the required dependencies listed in the `requirements.txt` file. You can install them using pip:
-
-pip install -r requirements.txt
-
+To use the scripts in this repository, you need to have Python 3 installed on your system. You also need to install the required dependencies listed below.
 
 ## Usage
 
